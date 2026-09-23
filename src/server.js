@@ -4,7 +4,7 @@
 // ============================================================
 
 const express = require("express");
-
+const path = require("path");
 const config = require("./config/env");
 
 const {
@@ -53,7 +53,30 @@ app.get("/", (req, res) => {
     });
 
 });
+// ============================================================
+// QR CODE DO WHATSAPP
+// ============================================================
 
+app.get("/whatsapp-qr", (req, res) => {
+
+    const qrPath = path.join(
+        process.cwd(),
+        "whatsapp-qr.png"
+    );
+
+    res.sendFile(qrPath, (error) => {
+
+        if (error) {
+
+            res.status(404).send(
+                "QR Code ainda não foi gerado."
+            );
+
+        }
+
+    });
+
+});
 // ============================================================
 // HEALTH CHECK
 // ============================================================
