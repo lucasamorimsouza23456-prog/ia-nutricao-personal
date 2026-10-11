@@ -42,7 +42,40 @@ app.use(express.json());
 // ============================================================
 
 app.get("/", (req, res) => {
+app.get("/qr-code", (req, res) => {
+    const QRCode = require("qrcode");
 
+    if (!global.qrCodeAtual) {
+        return res.status(404).send(
+            "QR Code indisponível. Reinicie o WhatsApp para gerar um novo."
+        );
+    }
+
+    res.setHeader("Cache-Control", "no-store");
+
+    QRCode.toDataURL(global.qrCodeAtual, (err, url) => {
+        if (err) {
+            return res.status(500).send("Erro ao gerar QR Code.");
+        }
+
+        res.send(`
+            <!DOCTYPE html>
+            <html lang="pt-BR">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <title>QR Code WhatsApp</title>
+            </head>
+            <body style="font-family:Arial;text-align:center;padding:30px">
+                <h2>Conectar WhatsApp</h2>
+                <p>Escaneie pelo WhatsApp em Aparelhos conectados.</p>
+                <img src="${url}" style="max-width:320px;width:100%">
+                <p>Se expirar, atualize a página após gerar outro QR.</p>
+            </body>
+            </html>
+        `);
+    });
+});
     res.json({
         status: "online",
         sistema: "IA Nutrição + Personal",

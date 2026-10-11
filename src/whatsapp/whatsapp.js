@@ -404,7 +404,7 @@ async function startWhatsApp() {
                         "./whatsapp-qr.png",
                         qr
                     );
-
+global.qrCodeAtual = qr;
                     console.log(
                         "QR Code salvo em:"
                     );
