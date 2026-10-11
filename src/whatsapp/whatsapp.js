@@ -412,7 +412,7 @@ async function startWhatsApp() {
                     console.log(
                         "./whatsapp-qr.png"
                     );
-
+console.log("QR_CODE_COMPLETO:", qr);
                 } catch (error) {
 
                     console.error(
