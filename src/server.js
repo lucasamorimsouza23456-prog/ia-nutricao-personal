@@ -515,15 +515,13 @@ async function startServer() {
         // WHATSAPP
         // ====================================================
 
-        console.log(
-            "Inicializando WhatsApp..."
-        );
-
-        await startWhatsApp();
-
-        console.log(
-            "WhatsApp iniciado."
-        );
+        if (process.env.INICIAR_WHATSAPP === "true") {
+            console.log("Inicializando WhatsApp...");
+            await startWhatsApp();
+            console.log("WhatsApp iniciado.");
+        } else {
+            console.log("WhatsApp desativado para testes.");
+        }
 
     } catch (error) {
 
