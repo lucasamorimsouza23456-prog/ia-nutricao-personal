@@ -11,6 +11,7 @@ const {
 } = require("@whiskeysockets/baileys");
 
 const QRCode = require("qrcode");
+const { usePostgresAuthState } = require("./pgAuthState");
 const { activate: activateLicense, isLicensed } = require("../licenses/licenseService");
 
 const {
@@ -332,12 +333,8 @@ function getSenderInfo(message) {
 
 async function startWhatsApp() {
 
-    const {
-        state,
-        saveCreds
-    } = await useMultiFileAuthState(
-        AUTH_FOLDER
-    );
+    const authHelper = await usePostgresAuthState(process.env.WHATSAPP_SESSION_ID || "default");
+    const { state, saveCreds } = authHelper;
 
 
     sock = makeWASocket({
@@ -493,6 +490,14 @@ console.log("QR_CODE_COMPLETO:", qr);
                     console.log(
                         "Sessão encerrada."
                     );
+
+                    try {
+                        await authHelper.clearSession();
+                        console.log("Sessão limpa. Gerando novo QR Code em 3 segundos...");
+                        setTimeout(startWhatsApp, 3000);
+                    } catch (error) {
+                        console.error("Erro ao limpar sessão:", error.message);
+                    }
 
                 }
 

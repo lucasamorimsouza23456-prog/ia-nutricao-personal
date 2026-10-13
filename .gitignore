@@ -7,3 +7,13 @@ npm-debug.log*
 auth_info/
 auth_info_backup/
 whatsapp-qr.png
+
+auth_info*
+desktop.ini
+*.backup.js
+whatsapp-qr.png
+
+auth_info*
+desktop.ini
+*.backup.js
+whatsapp-qr.png
